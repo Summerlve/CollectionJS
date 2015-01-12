@@ -40,7 +40,7 @@
 					return ;
 				}
 				
-				return all[index] ? all[index] : undefined;
+				return all[index] ? all[index] : void 0;
 			},
 			deleteAtIndex: function (index) {
 				// 检测是否为数字
@@ -68,10 +68,10 @@
 				return this;
 			},
 			first: function () {
-				return all[0] ? all[0] : undefined;
+				return all[0] ? all[0] : void 0;
 			},
 			last: function () {
-				return all[all.length - 1] ? all[all.length - 1] : undefined;
+				return all[all.length - 1] ? all[all.length - 1] : void 0;
 			}
 		} 
 		
@@ -80,14 +80,3 @@
 	
 	window.Collection = Collection;
 }());
-
-var coll = new Collection();
-coll.push("zhangwhao");
-console.log(coll.length());
-
-
-var coll2 = new Collection();
-coll2.push("fae");
-coll2.push("fae");
-coll2.push("fae");
-console.log(coll2.length());
