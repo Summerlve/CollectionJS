@@ -107,6 +107,10 @@
 		return new factory ();
 	}
 	
+	var el = function () {
+			
+	}
+	
 	// 只暴露出Collection，保护init
 	var Collection  = function (obj) {
 		return new init(obj);
