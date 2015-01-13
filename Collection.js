@@ -1,15 +1,29 @@
 ;(function (window){
-	// 常用函数
+	// $ is jQuery
+	var $ = window.jQuery || window.$;
+
+	// 检测函数
 	var isObject = function (obj) {
 		var type = typeof obj;
 		return type === "object" && !!obj;
 	};
 	
-	// $ is jQuery
-	var $ = window.jQuery || window.$;
+	// Element、Collection共用函数
+	var extend = function (obj) {
+		if (!isObject(obj)) return ;
+		
+		var key;
+		for (key in obj) {
+			if (obj.hasOwnProperty(key) && !(key in this)) {
+				this[key] = obj[key];
+			}
+		}
+		
+		return this;
+	};
 	
-	// init 初始化函数
-	var init = function (obj){		
+	// CollectionInit 初始化函数
+	var CollectionInit = function (obj){		
 		var all = []; // 私有变量，只能通过方法来访问。
 		
 		// Collection的主体
@@ -20,18 +34,7 @@
 	
 		factory.prototype = {
 			constructor: factory,
-			extend: function (obj) {
-				if (!isObject(obj)) return ;
-				
-				var key;
-				for (key in obj) {
-					if (obj.hasOwnProperty(key) && !(key in this)) {
-						this[key] = obj[key];
-					}
-				}
-				
-				return this;
-			},
+			extend: extend,
 			push: function (o) {
 				all.push(o);
 				return this;
@@ -107,14 +110,34 @@
 		return new factory ();
 	}
 	
-	var el = function () {
-			
-	}
-	
-	// 只暴露出Collection，保护init
+	// 只暴露出Collection，保护CollectionInit
 	var Collection  = function (obj) {
-		return new init(obj);
+		return new CollectionInit(obj);
 	};
-
+	
+	
+	// Element初始化函数
+	var ElInit = function () {
+	
+		// Element的主体
+		var factory = function () {
+				
+		};
+		
+		factory.prototype = {
+			constructor: factory,
+			extend: extend
+		}
+				
+		return new factory ();
+	};
+	
+	// 只暴露出Collection，保护ElInit
+	var el  = function (obj) {
+		return new ElInit(obj);
+	};
+		
+	
+	window.el = el; 
 	window.Collection = Collection;
 }(window));
