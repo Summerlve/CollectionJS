@@ -1,6 +1,7 @@
+//Collection
 ;(function (window){
 	// $ is jQuery
-	var $ = window.jQuery || window.$;
+	var $ = window.$ || window.jQuery ;
 
 	// 检测函数
 	var isObject = function (obj) {
@@ -116,6 +117,17 @@
 	};
 	
 	
+	
+	window.Collection = Collection;
+}(window));
+
+
+
+//El
+;(function (window){
+	// $ is jQuery
+	var $ = window.$ || window.jQuery;
+	
 	// Element初始化函数
 	var ElInit = function () {
 	
@@ -132,12 +144,10 @@
 		return new factory ();
 	};
 	
-	// 只暴露出Collection，保护ElInit
-	var el  = function (obj) {
+	// 只暴露出el，保护ElInit
+	var El  = function (obj) {
 		return new ElInit(obj);
 	};
-		
 	
-	window.el = el; 
-	window.Collection = Collection;
+	window.El = El; 
 }(window));
