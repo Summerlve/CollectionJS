@@ -1,7 +1,7 @@
 # CollectionJS
 
 # INSTALL
-	<script src=""></script>
+	<script src="Collection.js"></script>
 
 # USING
 	var collection = new Collection(); 
