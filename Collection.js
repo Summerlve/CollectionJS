@@ -1,9 +1,11 @@
 //Collection
 ;(function (window){
+	var version = 0.01;
+	
 	// $ is jQuery
 	var $ = window.$ || window.jQuery ;
 
-	// 检测函数
+	// 通用函数
 	var isObject = function (obj) {
 		var type = typeof obj;
 		return type === "object" && !!obj;
@@ -23,17 +25,17 @@
 		return this;
 	};
 	
-	// CollectionInit 初始化函数
+	// Collection的初始化函数
 	var CollectionInit = function (obj){		
 		var all = []; // 私有变量，只能通过方法来访问。
 		
 		// Collection的主体
 		var factory = function () {
-			//  P606
-	 		/* Object.seal(this);  */
+			
  		};
 	
 		factory.prototype = {
+			version: version,
 			constructor: factory,
 			extend: extend,
 			push: function (o) {
@@ -111,24 +113,7 @@
 		return new factory ();
 	}
 	
-	// 只暴露出Collection，保护CollectionInit
-	var Collection  = function (obj) {
-		return new CollectionInit(obj);
-	};
-	
-	
-	
-	window.Collection = Collection;
-}(window));
-
-
-
-//El
-;(function (window){
-	// $ is jQuery
-	var $ = window.$ || window.jQuery;
-	
-	// Element初始化函数
+	// El的初始化函数
 	var ElInit = function () {
 	
 		// Element的主体
@@ -137,6 +122,7 @@
 		};
 		
 		factory.prototype = {
+			version: version,
 			constructor: factory,
 			extend: extend
 		}
@@ -144,10 +130,16 @@
 		return new factory ();
 	};
 	
-	// 只暴露出el，保护ElInit
+	// 只暴露出Collection，保护CollectionInit
+	var Collection  = function (obj) {
+		return new CollectionInit(obj);
+	};
+	
+	// 只暴露出El，保护ElInit
 	var El  = function (obj) {
 		return new ElInit(obj);
 	};
 	
+	window.Collection = Collection;
 	window.El = El; 
 }(window));
