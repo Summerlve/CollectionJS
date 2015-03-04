@@ -38,12 +38,36 @@
 			version: version,
 			constructor: factory,
 			extend: extend,
+			display: function () {
+				// just for test			
+				console.log(all);	
+			},
 			push: function (o) {
+				all.push(o);
+				return this;
+			},
+			add: function (o) {
+				// add is alias of push
 				all.push(o);
 				return this;
 			},
 			pop: function () {
 				return all.pop();
+			},
+			each: function (fn) {
+				// fn(currentValue, index)
+				all.forEach(function (currentValue, index) {
+					fn.apply(currentValue, [currentValue, index]);
+				});
+				return this;
+			},
+			map: function (fn) {
+				var result = [];
+				// fn(currentValue, index)
+				all.forEach(function (currentValue, index) {
+					result.push(fn.apply(currentValue, [currentValue, index]));
+				});
+				return result;
 			},
 			getAtIndex: function (index) {
 				// 检测是否为数字
@@ -88,6 +112,7 @@
 				return this;
 			},
 			all: function () {
+				/*return a array*/
 				return all.slice();	
 			},
 			first: function () {

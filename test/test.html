@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+	<meta charset="utf-8">
+	<script src="../Collection.js"></script>
+</head>
+<body>
+	<script>
+		var coll = new Collection();
+		coll.push("zhangaho");
+		coll.push("wocao");
+		coll.each(function (currentValue, index) {
+			cur = "1";
+		})
+		coll.display();
+		
+	
+		console.log(coll.map(function (cur, index) {
+			return cur + " is sb";
+		}));	
+	</script>
+</body>
+</html>
