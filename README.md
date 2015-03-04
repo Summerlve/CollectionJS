@@ -2,7 +2,7 @@
     just warp the javascript origin array.
 # INSTALL
 	<script src="Collection.js"></script>
-# methods
+# METHODS
     push
     add
     pop
