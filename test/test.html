@@ -6,13 +6,15 @@
 </head>
 <body>
 	<script>
-		var stack = new Collection();
-		stack.add("123");
-		stack.add("123");
+		var stack = new STACK();
+		stack.push("123", "gre");
+		stack.push("agf", "5u566");
 		stack.display();
 		
-		var stack2 = new Collection();
-		console.log(stack.toArray());
+		var queue = new QUEUE();
+		queue.unshift("1", "2");
+		queue.unshift("3", "4");
+		queue.display();
 	</script>
 </body>
 </html>

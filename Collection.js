@@ -1,22 +1,30 @@
 //Collection
 ;(function (window){
-	var version = 0.02;
-
+	var version = 0.10;
+	// 原生函数
+	var toString = Object.prototype.toString;
+	var unshift = Array.prototype.unshift;
+	var push = Array.prototype.push;
+	
 	// 通用函数
 	var isObject = function (obj) {
 		var type = typeof obj;
 		return type === "object" && !!obj;
 	};
 	
-	// Collection的主体
-	var Collection = function () {
+	var isNumber = function (o) {
+		return toString.call(o) === "[object Number]";
+	}
+		
+	// Collection
+	var COLLECTION = function () {
 		// 用于封装的原生数组。
 		this.all = [];
 	};
 
-	Collection.prototype = {
+	COLLECTION.prototype = {
 		version: version,
-		constructor: Collection,
+		constructor: COLLECTION,
 		extend: function (obj) {
 			if (!isObject(obj)) return ;
 			
@@ -32,27 +40,6 @@
 		display: function () {
 			// just for test			
 			console.log(this.all);	
-		},
-		// Stack Method
-		push: function (o) {
-			this.all.push(o);
-			return this;
-		},
-		add: function (o) {
-			// add is alias of push
-			this.push(o);
-			return this;
-		},
-		pop: function () {
-			return this.all.pop();
-		},
-		// Queue Method
-		unshift: function (o) {
-			this.all.unshift(o);
-			return this;	
-		},
-		shift: function () {
-			return this.all.shift();
 		},
 		// Traverse Method
 		each: function (fn) {
@@ -73,42 +60,37 @@
 		// General Method
 		get: function (index) {
 			// 检测是否为数字
-			if (typeof index !== "number") {
-				console.log("参数必需是数字");
+			if (!isNumber(index)) {
+				console.error("参数必需是数字");
 				return ;
 			} 
 			
 			// 是否越界
 			var tempLength = this.all.length;
 			if (index > -- tempLength) {
-				console.log("数组越界");
+				console.error("数组越界");
 				return ;
 			}
 			
 			var cur = this.all[index]
 			return cur ? cur : void 0;
 		},
-		del: function (index) {
+		remove: function (index) {
 			// 检测是否为数字
-			if (typeof index !== "number") {
-				console.log("参数必需是数字");
+			if (!isNumber(index)) {
+				console.error("参数必需是数字");
 				return ;
 			}
 			
 			// 是否越界
 			var tempLength = this.all.length;
 			if (index > -- tempLength) {
-				console.log("数组越界");
+				console.error("数组越界");
 				return ;
 			}
 			
 			// 删除
 			this.all.splice(index, 1);
-			return this;
-		},
-		remove: function (index) {
-			// remove is alias of del
-			this.del(index);
 			return this;
 		},
 		length: function () {
@@ -131,7 +113,47 @@
 			return last ? last : void 0;
 		}
 	};
+	
+	// Stack 
+	var STACK = function () {
+		COLLECTION.call(this);
+	};
+
+	STACK.prototype = new COLLECTION();
+	STACK.fn = STACK.prototype;
+	STACK.fn.constructor = STACK;
+	
+	STACK.fn.push = function () {
+		push.apply(this.all, arguments);
+		return this;
+	};
 		
+	STACK.fn.pop = function () {
+		return this.all.pop();
+	};
+	
+	
+	// Queue
+	var QUEUE = function () {
+		COLLECTION.call(this);
+	};
+	
+	QUEUE.prototype = new COLLECTION();
+	QUEUE.fn = QUEUE.prototype;
+	QUEUE.fn.constructor = QUEUE;
+	
+	QUEUE.fn.unshift = function () {
+		unshift.apply(this.all, arguments);
+		return this;	
+	};
+	
+	QUEUE.fn.shift = function () {
+		return this.all.shift();
+	};
+	
+	
 	// 映射成全局变量
-	window.Collection = Collection;
+	window.COLLECTION = COLLECTION;
+	window.STACK = STACK;
+	window.QUEUE = QUEUE;
 }(window));
