@@ -8,133 +8,130 @@
 		return type === "object" && !!obj;
 	};
 	
-	// 扩展函数
-	var extend = function (obj) {
-		if (!isObject(obj)) return ;
-		
-		var key;
-		for (key in obj) {
-			if (obj.hasOwnProperty(key) && !(key in this)) {
-				this[key] = obj[key];
-			}
-		}
-		
-		return this;
+	// Collection的主体
+	var Collection = function () {
+		// 用于封装的原生数组。
+		this.all = [];
 	};
-	
-	// Collection的初始化函数
-	var CollectionInit = function (obj) {		
-		var all = []; // 私有变量，只能通过方法来访问。
-		
-		// Collection的主体
-		var factory = function () {
+
+	Collection.prototype = {
+		version: version,
+		constructor: Collection,
+		extend: function (obj) {
+			if (!isObject(obj)) return ;
 			
- 		};
-	
-		factory.prototype = {
-			version: version,
-			constructor: factory,
-			extend: extend,
-			display: function () {
-				// just for test			
-				console.log(all);	
-			},
-			push: function (o) {
-				all.push(o);
-				return this;
-			},
-			add: function (o) {
-				// add is alias of push
-				this.push(o);
-				return this;
-			},
-			pop: function () {
-				return all.pop();
-			},
-			each: function (fn) {
-				// fn (currentValue, index)
-				all.forEach(function (currentValue, index) {
-					fn.apply(currentValue, [currentValue, index]);
-				});
-				return this;
-			},
-			map: function (fn) {
-				var result = [];
-				// fn (currentValue, index)
-				all.forEach(function (currentValue, index) {
-					result.push(fn.apply(currentValue, [currentValue, index]));
-				});
-				return result;
-			},
-			get: function (index) {
-				// 检测是否为数字
-				if (typeof index !== "number") {
-					console.log("参数必需是数字");
-					return ;
-				} 
-				
-				// 是否越界
-				var tempLength = all.length;
-				if (index > -- tempLength) {
-					console.log("数组越界");
-					return ;
+			var key;
+			for (key in obj) {
+				if (obj.hasOwnProperty(key) && !(key in this)) {
+					this[key] = obj[key];
 				}
-				
-				var cur = all[index]
-				return cur ? cur : void 0;
-			},
-			del: function (index) {
-				// 检测是否为数字
-				if (typeof index !== "number") {
-					console.log("参数必需是数字");
-					return ;
-				}
-				
-				// 是否越界
-				var tempLength = all.length;
-				if (index > -- tempLength) {
-					console.log("数组越界");
-					return ;
-				}
-				
-				// 删除
-				all.splice(index, 1);
-				return this;
-			},
-			remove: function (index) {
-				// remove is alias of del
-				this.del(index);
-				return this;
-			},
-			length: function () {
-				return all.length;
-			},
-			empty: function () {
-				all.length = 0;
-				return this;
-			},
-			all: function () {
-				/*return a array*/
-				return all.slice();	
-			},
-			first: function () {
-				var first = all[0];
-				return first ? first : void 0;
-			},
-			last: function () {
-				var last = all[all.length - 1]
-				return last ? last : void 0;
 			}
-		};
-		
-		return new factory ();
-	}
-		
-	// 只暴露出Collection，保护CollectionInit
-	var Collection  = function (obj) {
-		return new CollectionInit(obj);
+			
+			return this;
+		},
+		display: function () {
+			// just for test			
+			console.log(this.all);	
+		},
+		// Stack Method
+		push: function (o) {
+			this.all.push(o);
+			return this;
+		},
+		add: function (o) {
+			// add is alias of push
+			this.push(o);
+			return this;
+		},
+		pop: function () {
+			return this.all.pop();
+		},
+		// Queue Method
+		unshift: function (o) {
+			this.all.unshift(o);
+			return this;	
+		},
+		shift: function () {
+			return this.all.shift();
+		},
+		// Traverse Method
+		each: function (fn) {
+			// fn (currentValue, index)
+			this.all.forEach(function (currentValue, index) {
+				fn.apply(currentValue, [currentValue, index]);
+			});
+			return this;
+		},
+		map: function (fn) {
+			var result = [];
+			// fn (currentValue, index)
+			this.all.forEach(function (currentValue, index) {
+				result.push(fn.apply(currentValue, [currentValue, index]));
+			});
+			return result;
+		},
+		// General Method
+		get: function (index) {
+			// 检测是否为数字
+			if (typeof index !== "number") {
+				console.log("参数必需是数字");
+				return ;
+			} 
+			
+			// 是否越界
+			var tempLength = this.all.length;
+			if (index > -- tempLength) {
+				console.log("数组越界");
+				return ;
+			}
+			
+			var cur = this.all[index]
+			return cur ? cur : void 0;
+		},
+		del: function (index) {
+			// 检测是否为数字
+			if (typeof index !== "number") {
+				console.log("参数必需是数字");
+				return ;
+			}
+			
+			// 是否越界
+			var tempLength = this.all.length;
+			if (index > -- tempLength) {
+				console.log("数组越界");
+				return ;
+			}
+			
+			// 删除
+			this.all.splice(index, 1);
+			return this;
+		},
+		remove: function (index) {
+			// remove is alias of del
+			this.del(index);
+			return this;
+		},
+		length: function () {
+			return this.all.length;
+		},
+		empty: function () {
+			this.all.length = 0;
+			return this;
+		},
+		toArray: function () {
+			// return a Array copy
+			return this.all.slice();	
+		},
+		first: function () {
+			var first = this.all[0];
+			return first ? first : void 0;
+		},
+		last: function () {
+			var last = this.all[this.all.length - 1]
+			return last ? last : void 0;
+		}
 	};
-	
+		
 	// 映射成全局变量
 	window.Collection = Collection;
 }(window));
