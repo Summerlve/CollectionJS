@@ -17,14 +17,14 @@
 	}
 		
 	// Collection
-	var COLLECTION = function () {
+	var Collection = function () {
 		// 用于封装的原生数组。
 		this.all = [];
 	};
 
-	COLLECTION.prototype = {
+	Collection.prototype = {
 		version: version,
-		constructor: COLLECTION,
+		constructor: Collection,
 		extend: function (obj) {
 			if (!isObject(obj)) return ;
 			
@@ -43,17 +43,19 @@
 		},
 		// Traverse Method
 		each: function (fn) {
-			// fn (currentValue, index)
+			// fn (currentValue, index)，this = currentValue
 			this.all.forEach(function (currentValue, index) {
-				fn.apply(currentValue, [currentValue, index]);
+				// 屏蔽forEach回调函数的第三个参数array
+				fn.call(currentValue, currentValue, index);
 			});
 			return this;
 		},
 		map: function (fn) {
 			var result = [];
-			// fn (currentValue, index)
+			// fn (currentValue, index)，this = currentValue
 			this.all.forEach(function (currentValue, index) {
-				result.push(fn.apply(currentValue, [currentValue, index]));
+				// 屏蔽forEach回调函数的第三个参数array
+				result.push(fn.call(currentValue, currentValue, index));
 			});
 			return result;
 		},
@@ -115,45 +117,45 @@
 	};
 	
 	// Stack 
-	var STACK = function () {
-		COLLECTION.call(this);
+	var Stack = function () {
+		Collection.call(this);
 	};
 
-	STACK.prototype = new COLLECTION();
-	STACK.fn = STACK.prototype;
-	STACK.fn.constructor = STACK;
+	Stack.prototype = new Collection();
+	Stack.fn = Stack.prototype;
+	Stack.fn.constructor = Stack;
 	
-	STACK.fn.push = function () {
+	Stack.fn.push = function () {
 		push.apply(this.all, arguments);
 		return this;
 	};
 		
-	STACK.fn.pop = function () {
+	Stack.fn.pop = function () {
 		return this.all.pop();
 	};
 	
 	
 	// Queue
-	var QUEUE = function () {
-		COLLECTION.call(this);
+	var Queue = function () {
+		Collection.call(this);
 	};
 	
-	QUEUE.prototype = new COLLECTION();
-	QUEUE.fn = QUEUE.prototype;
-	QUEUE.fn.constructor = QUEUE;
+	Queue.prototype = new Collection();
+	Queue.fn = Queue.prototype;
+	Queue.fn.constructor = Queue;
 	
-	QUEUE.fn.unshift = function () {
+	Queue.fn.unshift = function () {
 		unshift.apply(this.all, arguments);
 		return this;	
 	};
 	
-	QUEUE.fn.shift = function () {
+	Queue.fn.shift = function () {
 		return this.all.shift();
 	};
 	
 	
 	// 映射成全局变量
-	window.COLLECTION = COLLECTION;
-	window.STACK = STACK;
-	window.QUEUE = QUEUE;
+	window.Collection = Collection;
+	window.Stack = Stack;
+	window.Queue = Queue;
 }(window));

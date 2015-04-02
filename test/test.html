@@ -6,12 +6,21 @@
 </head>
 <body>
 	<script>
-		var stack = new STACK();
-		stack.push("123", "gre");
-		stack.push("agf", "5u566");
+		var stack = new Stack();
+		stack.push("a", "b");
+		stack.push("c", "d");
 		stack.display();
 		
-		var queue = new QUEUE();
+		stack.each(function (cur, index) {
+			console.log(this + "：" + index);
+		});
+		
+		var result = stack.map(function (cur, index) {
+			return this + "mapmapmap";
+		});
+		console.log(result);
+		
+		var queue = new Queue();
 		queue.unshift("1", "2");
 		queue.unshift("3", "4");
 		queue.display();
