@@ -6,7 +6,7 @@
 </head>
 <body>
 	<script>
-		var stack = new Stack();
+		var stack = new Stack("mystack");
 		stack.push("a", "b");
 		stack.push("c", "d");
 		stack.display();
@@ -20,10 +20,17 @@
 		});
 		console.log(result);
 		
-		var queue = new Queue();
+		var queue = new Queue("myqueue");
 		queue.unshift("1", "2");
 		queue.unshift("3", "4");
 		queue.display();
+		
+		var queue = Queue.lib.where("myqueue");
+		console.log(queue);
+
+		var haha = new Stack("1");
+		console.log(haha);
+		var haha = new Stack("myqueue");
 	</script>
 </body>
 </html>

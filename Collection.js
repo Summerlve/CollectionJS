@@ -1,30 +1,73 @@
+"use strict"
 //Collection
 ;(function (window){
-	var version = 0.10;
+	var version = 0.11;
+		
+	// 原生函数的原型对象
+	var ArrayProto = Array.prototype;
+	var ObjProto = Object.prototype;
+	
 	// 原生函数
-	var toString = Object.prototype.toString;
-	var unshift = Array.prototype.unshift;
-	var push = Array.prototype.push;
+	var toString = ObjProto.toString;
+	var unshift = ArrayProto.unshift;
+	var push = ArrayProto.push;
 	
 	// 通用函数
-	var isObject = function (obj) {
-		var type = typeof obj;
-		return type === "object" && !!obj;
-	};
+	function isObject (o) {
+		var type = typeof o;
+		return type === "object" && !!o;
+	}
 	
-	var isNumber = function (o) {
+	function isNumber (o) {
 		return toString.call(o) === "[object Number]";
 	}
+	
+	function isString (o) {
+		return toString.call(o) === "[object String]"
+	}
+	
 		
+	// 用于全局搜索数据结构，和tag搭配，Stack与Queue共用
+	function Lib () {
+		this.store =  [];
+	}
+	
+	Lib.prototype = {
+		constructor: Lib,
+		add: function (o) {
+			// tag不能重复。
+			var isExist = false;
+			this.store.filter(function (cur, index, array) {
+				if (cur.tag === o.tag) isExist = true;
+			});
+			
+			if (isExist) {
+				throw "tag重复";
+			} else {
+				this.store.push(o);	
+			}
+		},
+		where: function (tag) {
+			var result = this.store.filter(function (cur, index, arr) {
+				if (cur.tag === tag) {
+					return cur;
+				}
+			});
+			return result[0];
+		}
+	};
+	
 	// Collection
-	var Collection = function () {
+	function Collection (tag) {
 		// 用于封装的原生数组。
 		this.all = [];
-	};
+		this.tag = tag;
+	}
 
 	Collection.prototype = {
 		version: version,
 		constructor: Collection,
+		/*
 		extend: function (obj) {
 			if (!isObject(obj)) return ;
 			
@@ -37,6 +80,8 @@
 			
 			return this;
 		},
+		*/
+		tag: "", // 用于全局搜索数据结构，必须是字符串，不能重复。
 		display: function () {
 			// just for test			
 			console.log(this.all);	
@@ -63,15 +108,13 @@
 		get: function (index) {
 			// 检测是否为数字
 			if (!isNumber(index)) {
-				console.error("参数必需是数字");
-				return ;
+				throw "get()的参数必需是数字";
 			} 
 			
 			// 是否越界
 			var tempLength = this.all.length;
 			if (index > -- tempLength) {
-				console.error("数组越界");
-				return ;
+				throw "数组越界";
 			}
 			
 			var cur = this.all[index]
@@ -80,15 +123,13 @@
 		remove: function (index) {
 			// 检测是否为数字
 			if (!isNumber(index)) {
-				console.error("参数必需是数字");
-				return ;
+				throw "remove()的参数必需是数字";
 			}
 			
 			// 是否越界
 			var tempLength = this.all.length;
 			if (index > -- tempLength) {
-				console.error("数组越界");
-				return ;
+				throw "数组越界";
 			}
 			
 			// 删除
@@ -117,42 +158,48 @@
 	};
 	
 	// Stack 
-	var Stack = function () {
-		Collection.call(this);
-	};
+	function Stack (tag) {
+		if (!isString(tag)) throw "tag必须是字符串";
+		Collection.call(this, tag);
+		Stack.lib.add(this);
+	}
 
-	Stack.prototype = new Collection();
-	Stack.fn = Stack.prototype;
-	Stack.fn.constructor = Stack;
+	Stack.lib = new Lib();
 	
-	Stack.fn.push = function () {
+	Stack.prototype = new Collection();
+	var StackProto = Stack.prototype;
+	StackProto.constructor = Stack;
+	
+	StackProto.push = function () {
 		push.apply(this.all, arguments);
 		return this;
 	};
 		
-	Stack.fn.pop = function () {
+	StackProto.pop = function () {
 		return this.all.pop();
 	};
 	
 	
 	// Queue
-	var Queue = function () {
-		Collection.call(this);
-	};
+	function Queue (tag) {
+		Collection.call(this, tag);
+		Queue.lib.add(this);
+	}
+	
+	Queue.lib = new Lib();
 	
 	Queue.prototype = new Collection();
-	Queue.fn = Queue.prototype;
-	Queue.fn.constructor = Queue;
+	var QueueProto = Queue.prototype;
+	QueueProto.constructor = Queue;
 	
-	Queue.fn.unshift = function () {
+	QueueProto.unshift = function () {
 		unshift.apply(this.all, arguments);
 		return this;	
 	};
 	
-	Queue.fn.shift = function () {
+	QueueProto.shift = function () {
 		return this.all.shift();
 	};
-	
 	
 	// 映射成全局变量
 	window.Collection = Collection;
