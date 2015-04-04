@@ -6,6 +6,7 @@
 </head>
 <body>
 	<script>
+		// Stack
 		var stack = new Stack("mystack");
 		stack.push("a", "b");
 		stack.push("c", "d");
@@ -20,17 +21,25 @@
 		});
 		console.log(result);
 		
+		
+		// Queue
 		var queue = new Queue("myqueue");
 		queue.unshift("1", "2");
 		queue.unshift("3", "4");
-		queue.display();
-		
-		var queue = Queue.lib.where("myqueue");
+		queue.haha = "123";
+		queue.hah = "123";
+		queue.unshift("5", "6");
 		console.log(queue);
-
-		var haha = new Stack("1");
-		console.log(haha);
-		var haha = new Stack("myqueue");
+		console.log(Object.isExtensible(queue)); // false
+		console.log(Object.isExtensible(stack)); // false	
+		
+		// SingleLinkedList
+		var haha = new SingleLinkedList();
+		haha.addToTail(1);
+		haha.addToTail(2);
+		console.log(haha.head.head);
+		
+		
 	</script>
 </body>
 </html>

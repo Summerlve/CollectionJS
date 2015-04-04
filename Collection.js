@@ -11,6 +11,7 @@
 	var toString = ObjProto.toString;
 	var unshift = ArrayProto.unshift;
 	var push = ArrayProto.push;
+	var preventExtensions = Object.preventExtensions; // 不可扩展对象
 	
 	// 通用函数
 	function isObject (o) {
@@ -26,6 +27,33 @@
 		return toString.call(o) === "[object String]"
 	}
 	
+	
+	// 单向链表
+	function SingleLinkedList () {
+		console.log(this);
+		this.head = this;
+		this.tail = this;
+		this.next = null;
+	}
+	
+	SingleLinkedList.prototype = {
+		constructor: SingleLinkedList,
+		addToTail: function (data) {
+			var o = {
+				data: data,
+				next: null
+			};
+			this.tail.next = o;
+			this.tail = o;
+		},
+		display: function () {
+			var cur = this.next;
+			while (cur !== null) {
+				console.log(cur.data);
+				cur = cur.next;
+			}
+		}
+	}
 		
 	// 用于全局搜索数据结构，和tag搭配，Stack与Queue共用
 	function Lib () {
@@ -162,6 +190,7 @@
 		if (!isString(tag)) throw "tag必须是字符串";
 		Collection.call(this, tag);
 		Stack.lib.add(this);
+		preventExtensions(this);
 	}
 
 	Stack.lib = new Lib();
@@ -184,6 +213,7 @@
 	function Queue (tag) {
 		Collection.call(this, tag);
 		Queue.lib.add(this);
+		preventExtensions(this);
 	}
 	
 	Queue.lib = new Lib();
@@ -205,4 +235,5 @@
 	window.Collection = Collection;
 	window.Stack = Stack;
 	window.Queue = Queue;
+	window.SingleLinkedList = SingleLinkedList;
 }(window));
