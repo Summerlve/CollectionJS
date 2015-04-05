@@ -1,7 +1,7 @@
 "use strict"
 //CollectionJS
 ;(function (window){
-	var version = 0.11;
+	var version = 0.12;
 		
 	// 原生函数的原型对象
 	var ArrayProto = Array.prototype;
@@ -101,6 +101,12 @@
 			this.tail = o;
 			++ this.length;
 		},
+		size: function () {
+			return this.length;	
+		},
+		isEmpty: function () {
+			return this.length === 0 ? true : false;
+		},
 		display: function () {
 			var cur = this.head.next;
 			var result = ["Head"];
@@ -109,12 +115,6 @@
 				cur = cur.next;
 			}
 			console.log(result.join(" -> "));
-		},
-		size: function () {
-			return this.length;	
-		},
-		isEmpty: function () {
-			return this.length === 0 ? true : false;
 		}
 	};
 
