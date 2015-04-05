@@ -8,38 +8,33 @@
 	<script>
 		// Stack
 		var stack = new Stack("mystack");
-		stack.push("a", "b");
-		stack.push("c", "d");
+		stack.push("a");
+		stack.push("c");
 		stack.display();
-		
-		stack.each(function (cur, index) {
-			console.log(this + "：" + index);
-		});
-		
-		var result = stack.map(function (cur, index) {
-			return this + "mapmapmap";
-		});
-		console.log(result);
 		
 		
 		// Queue
 		var queue = new Queue("myqueue");
-		queue.unshift("1", "2");
-		queue.unshift("3", "4");
-		queue.haha = "123";
-		queue.hah = "123";
-		queue.unshift("5", "6");
-		console.log(queue);
-		console.log(Object.isExtensible(queue)); // false
-		console.log(Object.isExtensible(stack)); // false	
+		queue.enqueue("1");
+		queue.enqueue("2");
+		queue.enqueue("3");
+		queue.display();
+		console.log(queue.size());
+		console.log(queue.dequeue());
+		console.log(queue.isEmpty());
+		console.log(queue.dequeue());
+		console.log(queue.dequeue());
+		console.log(queue.isEmpty());
+
 		
 		// SingleLinkedList
-		var haha = new SingleLinkedList();
+		var haha = new SingleLinkedList();	
 		haha.addToTail(1);
 		haha.addToTail(2);
-		console.log(haha.head.head);
-		
-		
+		haha.addToTail(3);
+
+		haha.display();
+		console.log(haha.size());
 	</script>
 </body>
 </html>
