@@ -81,7 +81,7 @@
 			return this.all.length === 0 ? true : false;
 		}
 	};
-	
+		
 	// SingleLinkedList
 	function SingleLinkedList () {
 		this.head = this;
