@@ -6,7 +6,17 @@
 </head>
 <body>
 	<script>
-	
+		var stack = new Stack();
+		stack.push(1).push(2).push(3);
+		stack.foreach(function (item) {
+			console.log(item); // 3 2 1
+		});
+		
+		var queue = new Queue();
+		queue.enqueue(1).enqueue(2).enqueue(3);
+		queue.foreach(function (item) {
+			console.log(item); // 1 2 3
+		});
 	</script>
 </body>
 </html>
