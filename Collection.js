@@ -45,7 +45,8 @@ Stack.prototype = {
 };
 
 function Queue () {
-	this.first = this.last = null;
+	this.first = null;
+	this.last = null;
 	this.N = 0
 }
 
